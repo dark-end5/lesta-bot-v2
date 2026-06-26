@@ -58,17 +58,28 @@ async function startBot() {
   });
 
   // Pairing Code
-if (!sock.authState.creds.registered) {
-  const phoneNumber = "254706519089";
+let pairingRequested = false;
 
-  try {
-    const code = await sock.requestPairingCode(phoneNumber);
-    console.log(chalk.green(`\nPairing Code: ${code}\n`));
-  } catch (err) {
-    console.error(chalk.red("Failed to generate pairing code."));
-    console.error(err);
+sock.ev.on("connection.update", async (update) => {
+  const { connection } = update;
+
+  if (connection === "open" && !pairingRequested) {
+    pairingRequested = true;
+
+    try {
+      const code = await sock.requestPairingCode("254706519089");
+      console.log(chalk.green("\nPAIRING CODE: " + code + "\n"));
+    } catch (err) {
+      console.log(chalk.red("Failed to generate pairing code"));
+      console.error(err);
+    }
   }
-}
+
+  if (connection === "close") {
+    console.log(chalk.red("❌ Connection Closed"));
+  }
+});
+  
 
 // Save credentials
 sock.ev.on("creds.update", saveCreds);
