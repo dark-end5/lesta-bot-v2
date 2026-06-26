@@ -1,34 +1,29 @@
 # ⚡ LESTA BOT v2 — ADVANCED
-# ✨ LESTA BOT v2
-
 <p align="center">
   <img src="https://readme-typing-svg.herokuapp.com?color=00F7FF&size=25&center=true&vCenter=true&width=600&lines=✨+Lesta+Bot+v2+Active+System;🤖+WhatsApp+Automation+Bot;⚡+Powered+by+Baileys+Engine;👑+Dark+Mode+Termux+Bot" />
 </p>
 
 ---
 
-## 📊 LIVE REPOSITORY STATS
+# 📊 LIVE REPOSITORY STATS
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/dark-end5/lestabot?style=for-the-badge&color=yellow" />
-  <img src="https://img.shields.io/github/forks/dark-end5/lestabot?style=for-the-badge&color=blue" />
-  <img src="https://img.shields.io/github/watchers/dark-end5/lestabot?style=for-the-badge&color=green" />
-  <img src="https://img.shields.io/github/repo-size/dark-end5/lestabot?style=for-the-badge&color=red" />
-  <img src="https://img.shields.io/github/last-commit/dark-end5/lestabot?style=for-the-badge" />
+  <img src="https://img.shields.io/github/stars/dark-end5/lesta-bot-v2?style=for-the-badge&color=yellow" />
+  <img src="https://img.shields.io/github/forks/dark-end5/lesta-bot-v2?style=for-the-badge&color=blue" />
+  <img src="https://img.shields.io/github/watchers/dark-end5/lesta-bot-v2?style=for-the-badge&color=green" />
+  <img src="https://img.shields.io/github/repo-size/dark-end5/lesta-bot-v2?style=for-the-badge&color=red" />
+  <img src="https://img.shields.io/github/last-commit/dark-end5/lesta-bot-v2?style=for-the-badge" />
 </p>
 
 ---
 
-## 📈 REPOSITORY AGE
+## 📈 AGE
 
 <p align="center">
-  <img src="https://img.shields.io/github/created-at/dark-end5/lestabot?style=for-the-badge&color=purple" />
+  <img src="https://img.shields.io/github/created-at/dark-end5/lesta-bot-v2?style=for-the-badge&color=purple" />
 </p>
 
 ---
-
-## 🎂 LESTA BOT BIRTHDAY CELEBRATION
-
 <p align="center">
   <img src="https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif" width="250"/>
 </p>
@@ -38,7 +33,7 @@
 </p>
 
 <p align="center">
-  <b>✨ HAPPY BIRTHDAY LESTA BOT ✨</b>
+  <b>✨ HAPPY DAY LESTA BOT ✨</b>
 </p>
 
 <p align="center">
@@ -46,8 +41,6 @@
 </p>
 
 ---
-
-## 🌈 RAINBOW TYPING SEQUENCE
 
 <p align="center">
   <img src="https://readme-typing-svg.herokuapp.com?color=FF0000&size=22&center=true&vCenter=true&width=500&lines=L;Le;Les;Lest;Lesta;Lesta+Bot;Lesta+Bot+V.2" />
