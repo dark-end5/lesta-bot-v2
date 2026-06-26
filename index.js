@@ -7,7 +7,6 @@ const {
 
 const P = require("pino");
 const chalk = require("chalk");
-const figlet = require("figlet");
 
 const { prefix } = require("./config");
 
@@ -18,32 +17,16 @@ const download = require("./lib/download");
 const tools = require("./lib/tools");
 const fun = require("./lib/fun");
 
-// ---------- BANNER ----------
+// ================= BANNER =================
 function showBanner() {
   console.clear();
-
-  const box = `
-╔════════════════════════════════════╗
-║        0101 LESTA SYSTEM 101       ║
-║   🤖 LESTA BOT v2 INITIALIZING     ║
-║   ⚡ WHATSAPP AUTOMATION BOT       ║
-╚════════════════════════════════════╝
-`;
-
-  console.log(chalk.cyan(box));
-
-  console.log(
-    chalk.green(
-      figlet.textSync("LESTA BOT v2", { font: "Slant" })
-    )
-  );
-
-  console.log(chalk.yellow("⚡ STATUS: ONLINE"));
-  console.log(chalk.magenta("👑 MODE: TERMUX BOT"));
-  console.log(chalk.blue("────────────────────────────\n"));
+  console.log(chalk.cyan("╔════════════════════════════╗"));
+  console.log(chalk.cyan("║      LESTA BOT v2          ║"));
+  console.log(chalk.cyan("║   WhatsApp Automation      ║"));
+  console.log(chalk.cyan("╚════════════════════════════╝\n"));
 }
 
-// ---------- START BOT ----------
+// ================= START BOT =================
 async function startBot() {
   showBanner();
 
@@ -53,58 +36,46 @@ async function startBot() {
   const sock = makeWASocket({
     version,
     auth: state,
-    printQRInTerminal: false,
+    printQRInTerminal: true, // IMPORTANT for Termux stability
     logger: P({ level: "silent" })
   });
 
-  // Pairing Code
-let pairingRequested = false;
+  // ================= PAIRING / QR FLOW =================
+  let pairingDone = false;
 
-sock.ev.on("connection.update", async (update) => {
-  const { connection } = update;
+  if (!state.creds.registered) {
+    sock.ev.on("connection.update", async (update) => {
+      const { connection } = update;
 
-  if (connection === "open" && !pairingRequested) {
-    pairingRequested = true;
+      if (connection === "open" && !pairingDone) {
+        pairingDone = true;
 
-    try {
-      const code = await sock.requestPairingCode("254706519089");
-      console.log(chalk.green("\nPAIRING CODE: " + code + "\n"));
-    } catch (err) {
-      console.log(chalk.red("Failed to generate pairing code"));
-      console.error(err);
-    }
+        try {
+          const code = await sock.requestPairingCode("254706519089");
+          console.log(chalk.green("\nPAIRING CODE: " + code + "\n"));
+        } catch (err) {
+          console.log(chalk.red("Pairing failed"));
+          console.error(err);
+        }
+      }
+
+      if (connection === "close") {
+        console.log(chalk.red("Connection closed"));
+
+        const shouldReconnect =
+          update.lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
+
+        if (shouldReconnect) {
+          startBot();
+        }
+      }
+    });
   }
 
-  if (connection === "close") {
-    console.log(chalk.red("❌ Connection Closed"));
-  }
-});
-  
-
-// Save credentials
-sock.ev.on("creds.update", saveCreds);
-
-// Connection updates
-sock.ev.on("connection.update", ({ connection, lastDisconnect }) => {
-  if (connection === "open") {
-    console.log(chalk.green("✅ WhatsApp Connected"));
-  }
-
-  if (connection === "close") {
-    const shouldReconnect =
-      lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
-
-    console.log(chalk.red("❌ Connection Closed"));
-
-    if (shouldReconnect) {
-      startBot();
-    }
-  }
-});
-    
-  
+  // ================= SAVE SESSION =================
   sock.ev.on("creds.update", saveCreds);
 
+  // ================= MESSAGE HANDLER =================
   sock.ev.on("messages.upsert", async ({ messages }) => {
     const msg = messages[0];
     if (!msg.message) return;
@@ -128,22 +99,22 @@ sock.ev.on("connection.update", ({ connection, lastDisconnect }) => {
     if (fun(sock, msg, command, args)) return;
   });
 
-  // Group Welcome
+  // ================= GROUP WELCOME =================
   sock.ev.on("group-participants.update", async (update) => {
     const { id, participants, action } = update;
 
     if (action === "add") {
       for (let user of participants) {
         sock.sendMessage(id, {
-          text: `👋 Welcome @${user.split("@")[0]} to ✨ Lesta Bot v2`,
+          text: `👋 Welcome @${user.split("@")[0]} to Lesta Bot v2`,
           mentions: [user]
         });
       }
     }
   });
 
-  console.log("🤖 Lesta Bot v2 Running...");
+  console.log(chalk.green("🤖 Lesta Bot v2 Running..."));
 }
 
 startBot();
-    
+      
