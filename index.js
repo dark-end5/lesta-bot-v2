@@ -58,16 +58,39 @@ async function startBot() {
   });
 
   // Pairing Code
-  if (!sock.authState.creds.registered) {
-    const phoneNumber = "254706519089";
-  sock.ev.on("connection.update", async (update) => {
-  const { connection } = update
+if (!sock.authState.creds.registered) {
+  const phoneNumber = "254706519089";
 
-  if (connection === "open") {
-    const code = await sock.requestPairingCode("254706519089")
-    console.log(code)
+  try {
+    const code = await sock.requestPairingCode(phoneNumber);
+    console.log(chalk.green(`\nPairing Code: ${code}\n`));
+  } catch (err) {
+    console.error(chalk.red("Failed to generate pairing code."));
+    console.error(err);
   }
-})
+}
+
+// Save credentials
+sock.ev.on("creds.update", saveCreds);
+
+// Connection updates
+sock.ev.on("connection.update", ({ connection, lastDisconnect }) => {
+  if (connection === "open") {
+    console.log(chalk.green("✅ WhatsApp Connected"));
+  }
+
+  if (connection === "close") {
+    const shouldReconnect =
+      lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
+
+    console.log(chalk.red("❌ Connection Closed"));
+
+    if (shouldReconnect) {
+      startBot();
+    }
+  }
+});
+    
   
   sock.ev.on("creds.update", saveCreds);
 
