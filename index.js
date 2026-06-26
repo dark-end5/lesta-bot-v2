@@ -32,7 +32,8 @@ async function startBot() {
 
   const { state, saveCreds } = await useMultiFileAuthState("session");
   const { version } = await fetchLatestBaileysVersion();
-
+  await new Promise(r => setTimeout(r, 2000));
+  
   const sock = makeWASocket({
     version,
     auth: state,
