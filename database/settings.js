@@ -2,7 +2,7 @@
   "prefix": ".",
   "botMode": "public",
   "welcome": true,
-  "antilink": false,
-  "autotyping": false,
-  "autobio": false
+  "antilink": true,
+  "autotyping": true,
+  "autobio": true
 }
